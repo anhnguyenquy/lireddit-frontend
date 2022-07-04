@@ -1,0 +1,3 @@
+mutation Doot($value: Int!, $postId: Int!)  { 
+  doot(value: $value, postId: $postId)
+}

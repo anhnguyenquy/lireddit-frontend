@@ -4,7 +4,7 @@
     "dev": "next",
     "build": "next build",
     "start": "next start",
-    "gen": "graphql-codegen --config codegen.yml"
+    "gqlcg": "graphql-codegen --config codegen.yml"
   },
   "dependencies": {
     "@chakra-ui/icons": "^1.1.7",
@@ -21,7 +21,8 @@
     "react-dom": "^17.0.2",
     "react-fast-compare": "^3.2.0",
     "react-is": "^18.2.0",
-    "urql": "^2.2.2"
+    "urql": "^2.2.2",
+    "wonka": "^4.0.15"
   },
   "devDependencies": {
     "@graphql-codegen/cli": "2.6.2",
@@ -31,9 +32,6 @@
     "@types/node": "^14.6.0",
     "@types/react": "^17.0.3",
     "@types/react-dom": "^17.0.3",
-    "autoprefixer": "^10.4.7",
-    "postcss": "^8.4.14",
-    "tailwindcss": "^3.1.2",
     "typescript": "4.3.2"
   },
   "packageManager": "yarn@3.2.1"
