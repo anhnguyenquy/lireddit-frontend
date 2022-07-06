@@ -3,7 +3,8 @@ import { Form, Formik } from 'formik'
 import { NextPage } from 'next'
 import { withUrqlClient } from 'next-urql'
 import { useRouter } from 'next/router'
-import { InputField, Layout } from '../components'
+import { useEffect, useState } from 'react'
+import { FormSuccessMessage, InputField, Layout } from '../components'
 import { useCreatePostMutation } from '../generated/graphql'
 import { useIsAuth } from '../hooks'
 import { createURQLClient } from '../utils'
@@ -13,9 +14,19 @@ interface CreatePostProps {
 }
 
 const CreatePost: NextPage<CreatePostProps> = () => {
+  useIsAuth(true)
   const router = useRouter()
-  useIsAuth({ autoRedirect: true })
   const [, createPost] = useCreatePostMutation()
+
+  const [redirectCount, setRedirectCount] = useState(3)
+  const [showSuccessMessage, setShowSuccessMessage] = useState(false)
+  useEffect(() => {
+    if (showSuccessMessage) {
+      setInterval(() => { 
+        setRedirectCount(count => count - 1)
+      }, 1000)
+    }
+  }, [showSuccessMessage])
   return (
     <Layout variant='small'>
       <Formik
@@ -23,7 +34,10 @@ const CreatePost: NextPage<CreatePostProps> = () => {
         onSubmit={async (values, { setErrors }) => {
           const { error } = await createPost({ input: values })
           if (!error) {
-            router.push('/')
+            setShowSuccessMessage(true)
+            setTimeout(() => {
+              router.push('/')
+            }, 3050)
           }
         }}
       >
@@ -33,6 +47,10 @@ const CreatePost: NextPage<CreatePostProps> = () => {
             <Box mt={4}>
               <InputField name='text' placeholder='text...' label='Body' textarea />
             </Box>
+            {
+              showSuccessMessage &&
+              <FormSuccessMessage message={`Post created successfully. Redirecting to home page in ${redirectCount}`} />
+            }
             <Button
               type='submit'
               isLoading={isSubmitting}

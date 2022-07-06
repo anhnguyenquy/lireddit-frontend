@@ -1,10 +1,9 @@
-import { Box, Heading } from '@chakra-ui/react'
+import { Box, Flex, Heading } from '@chakra-ui/react'
 import { NextPage } from 'next'
 import { withUrqlClient } from 'next-urql'
 import { useRouter } from 'next/router'
-import { useEffect } from 'react'
-import { Layout } from '../../components'
-import { usePostQuery } from '../../generated/graphql'
+import { EditDeletePostButtons, Layout } from '../../components'
+import { useGetPostFromURL } from '../../hooks'
 import { createURQLClient } from '../../utils'
 
 interface PostProps {
@@ -13,14 +12,7 @@ interface PostProps {
 
 const Post: NextPage<PostProps> = () => {
   const router = useRouter()
-  const intId = typeof router.query.id == 'string' ? parseInt(router.query.id as string) : -1
-  const [{ data, error, fetching }] = usePostQuery({
-    pause: intId == -1,
-    variables: {
-      id: intId
-    }
-  })
-
+  const [{ data, error, fetching }] = useGetPostFromURL()
   if (fetching) {
     return <>loading...</>
   }
@@ -40,8 +32,11 @@ const Post: NextPage<PostProps> = () => {
 
   return (
     <Layout>
-      <Heading>{data.post.title}</Heading>
-      {data.post.text}
+      <Heading mb={4}>{data.post.title}</Heading>
+      <Box>{data.post.text}</Box>
+      <Flex w='calc(80px + 0.5rem)' mt={4} justifyContent='space-between'>
+        <EditDeletePostButtons id={data.post.id} />
+      </Flex>
     </Layout>
   )
 }

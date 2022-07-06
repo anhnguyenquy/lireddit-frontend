@@ -45,7 +45,7 @@ const Login = (props: LoginProps): JSX.Element => {
             setErrors(toErrorMap(response.data.login.errors))
           }
           else if (response.data?.login.user) { // if registered successfully
-            if (typeof router.query.next === 'string') {
+            if (typeof router.query.next == 'string') {
               router.push(router.query.next)
             }
             else { // next is undefined

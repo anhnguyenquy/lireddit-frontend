@@ -1,3 +1,5 @@
 export * from './useIsAuth'
 export * from './useUser'
 export * from './useRequireLogin'
+export * from './useGetPostFromURL'
+export * from './useGetQueryID'

@@ -3,7 +3,7 @@ import { useIsAuth } from './useIsAuth'
 import { useUser } from './useUser'
 
 export const useRequireLogin = () => {
-  const { redirectLogin } = useIsAuth({ autoRedirect: false })
+  const { redirectLogin } = useIsAuth(false)
   const [requiring, setRequiring] = useState(false)
   const user = useUser()
 

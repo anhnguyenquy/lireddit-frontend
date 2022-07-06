@@ -2786,6 +2786,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"autosize@npm:^5.0.1":
+  version: 5.0.1
+  resolution: "autosize@npm:5.0.1"
+  checksum: 18e8aec2ab5f628c70a38019512357004c59dd03f7dd86616d628326f5ef7aab532dce13939d5b6640e5793db3b27c9630d1d07c8ca4a545d189ab23f1b5b8f0
+  languageName: node
+  linkType: hard
+
 "babel-plugin-dynamic-import-node@npm:^2.3.3":
   version: 2.3.3
   resolution: "babel-plugin-dynamic-import-node@npm:2.3.3"
@@ -6211,6 +6218,7 @@ next@latest:
     "@types/react": ^17.0.3
     "@types/react-dom": ^17.0.3
     "@urql/exchange-graphcache": ^4.4.3
+    autosize: ^5.0.1
     formik: ^2.2.9
     framer-motion: ^6
     graphql: ^16.5.0

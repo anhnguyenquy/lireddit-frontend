@@ -1,9 +1,9 @@
-import { cacheExchange, Resolver } from '@urql/exchange-graphcache'
+import { Cache, cacheExchange, Resolver } from '@urql/exchange-graphcache'
 import { NextUrqlClientConfig } from 'next-urql'
 import Router from 'next/router'
 import { dedupExchange, Exchange, fetchExchange, gql } from 'urql'
 import { pipe, tap } from 'wonka'
-import { CreatePostMutation, DootMutation, DootMutationVariables, LoginMutation, LogoutMutation, MeDocument, MeQuery, RegisterMutation } from '../generated/graphql'
+import { CreatePostMutation, DeletePostMutation, DeletePostMutationVariables, DootMutation, DootMutationVariables, LoginMutation, LogoutMutation, MeDocument, MeQuery, RegisterMutation } from '../generated/graphql'
 import { isServer } from './isServer'
 
 // returns the links for all previously cached items given query
@@ -34,9 +34,9 @@ export const cursorPagination = (): Resolver => {
       ]
     */
 
-    const fieldInfos = allFields.filter(info => info.fieldName === fieldName)
+    const fieldInfos = allFields.filter(info => info.fieldName == fieldName)
     const size = fieldInfos.length
-    if (size === 0) {
+    if (size == 0) {
       return undefined
     }
 
@@ -98,8 +98,24 @@ const errorExchange: Exchange = ({ forward }) => ops$ => { // runs every time th
       if (error?.message.includes('Not authenticated')) {
         Router.replace('/login') // replaces the current route in history to the new address rather than pushing to a new entry
       }
+      if (error?.message.includes('Not authorised')) {
+        alert('Not authorised!')
+      }
     })
   )
+}
+
+const invalidateAllPosts = (cache: Cache) => {
+  // removes the cache of the posts query with the specified arguments
+  // from the cache so that urql automatically refetches
+  const allFields = cache.inspectFields('Query')
+  const fieldInfos = allFields.filter(info => info.fieldName == 'posts')
+
+  // cache.invalidate('Query', 'posts') doesn't work so we have to
+  // manually remove all cache of posts
+  for (let info of fieldInfos) {
+    cache.invalidate('Query', 'posts', info.arguments)
+  }
 }
 
 export const createURQLClient: NextUrqlClientConfig = (ssrExchange, ctx) => {
@@ -126,17 +142,23 @@ export const createURQLClient: NextUrqlClientConfig = (ssrExchange, ctx) => {
         },
         updates: {   // changes what is cached after mutations are run
           Mutation: {
-            doot: (result: DootMutation, args: DootMutationVariables, cache, info) => {
+            deletePost: (_result: DeletePostMutation, args: DeletePostMutationVariables, cache: Cache, _info) => {
+              cache.invalidate({
+                __typename: 'Post',
+                id: args.id
+              })
+            },
+            doot: (_result: DootMutation, args: DootMutationVariables, cache, _info) => {
               const { postId, value } = args
 
               // reads data of the updated (just dooted) post from the cache
               const data = cache.readFragment(
                 gql`
-                fragment _ on Post {
-                  points
-                  voteStatus
-                }
-              `,
+                  fragment _ on Post {
+                    points
+                    voteStatus
+                  }
+                `,
                 { id: postId }
               )
               const { points, voteStatus } = data
@@ -153,11 +175,11 @@ export const createURQLClient: NextUrqlClientConfig = (ssrExchange, ctx) => {
                   // updates data of the updated (just dooted) from post from the cache
                   cache.writeFragment(
                     gql`
-                  fragment _ on Post {
-                    points  
-                    voteStatus
-                  }
-                `,
+                      fragment _ on Post {
+                        points  
+                        voteStatus
+                      }
+                    `,
 
                     /*
                       This should not only contain properties that are necessary to derive an entity key 
@@ -170,28 +192,18 @@ export const createURQLClient: NextUrqlClientConfig = (ssrExchange, ctx) => {
 
                   cache.writeFragment(
                     gql`
-                  fragment _ on Post {
-                    points  
-                    voteStatus
-                  }
-                `,
-
+                      fragment _ on Post {
+                        points  
+                        voteStatus
+                      }
+                    `,
                     { id: postId, points: points + (value == 1 ? -1 : 1), voteStatus: null }
                   )
                 }
               }
             },
             createPost: (_result: CreatePostMutation, _args, cache, _info) => {
-              // removes the cache of the posts query with the specified arguments
-              // from the cache so that urql automatically refetches
-              const allFields = cache.inspectFields('Query')
-              const fieldInfos = allFields.filter(info => info.fieldName === 'posts')
-
-              // cache.invalidate('Query', 'posts') doesn't work so we have to
-              // manually remove all cache of posts
-              for (let info of fieldInfos) {
-                cache.invalidate('Query', 'posts', info.arguments)
-              }
+              invalidateAllPosts(cache)
             },
             /*
               _result: The return value of the login mutation resolver e.g. 
@@ -219,11 +231,7 @@ export const createURQLClient: NextUrqlClientConfig = (ssrExchange, ctx) => {
               info: Contains running information about the traversal of the query document. It allows us to make resolvers reusable or to retrieve information about the entire query.
             */
             login: (_result: LoginMutation, _args, cache, _info) => {
-              const allFields = cache.inspectFields('Query')
-              const fieldInfos = allFields.filter(info => info.fieldName === 'posts')
-              for (let info of fieldInfos) {
-                cache.invalidate('Query', 'posts', info.arguments)
-              }
+              invalidateAllPosts(cache)
 
               /* 
                 - { query: MeDocument } specifies the query whose cache is to be updated
@@ -269,11 +277,8 @@ export const createURQLClient: NextUrqlClientConfig = (ssrExchange, ctx) => {
               })
             },
             logout: (_result: LogoutMutation, _args, cache, _info) => {
-              const allFields = cache.inspectFields('Query')
-              const fieldInfos = allFields.filter(info => info.fieldName === 'posts')
-              for (let info of fieldInfos) {
-                cache.invalidate('Query', 'posts', info.arguments)
-              }
+              // All this is not required if we reload when logged out
+              invalidateAllPosts(cache)
               cache.updateQuery({ query: MeDocument }, (_: MeQuery) => {
                 return {
                   me: null

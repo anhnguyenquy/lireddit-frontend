@@ -1,11 +1,10 @@
-import { DeleteIcon } from '@chakra-ui/icons'
-import { Box, Button, Flex, Heading, IconButton, Link, Stack, Text } from '@chakra-ui/react'
+import { Box, Button, Flex, Heading, Link, Stack, Text } from '@chakra-ui/react'
 import { NextPage } from 'next'
 import { withUrqlClient } from 'next-urql'
 import NextLink from 'next/link'
 import { useState } from 'react'
-import { Layout, UpdootSection } from '../components'
-import { useDeletePostMutation, usePostsQuery } from '../generated/graphql'
+import { EditDeletePostButtons, Layout, UpdootSection } from '../components'
+import { usePostsQuery } from '../generated/graphql'
 import { useUser } from '../hooks'
 import { createURQLClient } from '../utils'
 
@@ -13,7 +12,6 @@ const Index: NextPage = () => {
   const [variables, setVariables] = useState<{ limit: number, cursor: string | null }>
     ({ limit: 15, cursor: null })
   const [{ data, fetching }] = usePostsQuery({ variables })
-  const [, deletePost] = useDeletePostMutation()
   const user = useUser()
   return (
     <Layout>
@@ -35,17 +33,10 @@ const Index: NextPage = () => {
                       <Text mt={4}>{p.textSnippet}</Text>
                     </Box>
                     {
-                      user?.id === p.creator.id &&
-                      <IconButton
-                        ml='auto'
-                        color='red.500'
-                        bg='transparent'
-                        icon={<DeleteIcon />}
-                        aria-label='delete'
-                        onClick={async () => {
-                          await deletePost({ id: p.id })
-                        }}
-                      />
+                      user?.id == p.creator.id &&
+                      <Flex flexDir='column' justifyContent='space-between' ml='auto' height='calc(80px + 0.25rem)'>
+                        <EditDeletePostButtons id={p.id} />
+                      </Flex>
                     }
                   </Flex>
                 </Flex>
@@ -78,7 +69,7 @@ const Index: NextPage = () => {
 /* 
   - withUrqlClient(createURQLClient) has to be wrapped around any page that uses URQL
   i.e. any query/mutation hooks
-  - if ssr is enabled, any urql queries/mutations 
+  - If SSR is enabled, any urql queries/mutations 
   (in this case usePostsQuery() and useMeQuery() inside <NavBar />) 
   will be executed on the server. As such, data in [{ data }] will always be defined
   and <div>loading...</div> will never be rendered.

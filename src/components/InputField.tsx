@@ -1,6 +1,7 @@
 import { FormControl, FormErrorMessage, FormLabel, Input, Textarea } from '@chakra-ui/react'
 import { useField } from 'formik'
-import { InputHTMLAttributes, TextareaHTMLAttributes } from 'react'
+import { InputHTMLAttributes, TextareaHTMLAttributes, useEffect, useRef } from 'react'
+import autosize from 'autosize'
 
 type InputFieldProps = any & {
   label: string
@@ -35,10 +36,17 @@ const InputComponent = (props: InputProps): JSX.Element => {
 const TextAreaComponent = (props: TextareaProps): JSX.Element => {
   const { label, name, ...rest } = props
   const [field, { error }] = useField(props)
+  const ref = useRef()
+  useEffect(() => {
+    autosize(ref.current)
+    return () => {
+      autosize.destroy(ref.current)
+    }
+  }, [])
   return (
     <FormControl isInvalid={!!error}>
       <FormLabel htmlFor={field.name}>{label}</FormLabel>
-      <Textarea {...field} {...props} id={field.name} />
+      <Textarea {...field} {...props} id={field.name} ref={ref} />
       {error && <FormErrorMessage>{error}</FormErrorMessage>}
     </FormControl>
   )

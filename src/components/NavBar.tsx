@@ -1,5 +1,6 @@
 import { Box, Button, Flex, Heading, Link } from '@chakra-ui/react'
 import NextLink from 'next/link'
+import { useRouter } from 'next/router'
 import { useMeQuery, useLogoutMutation } from '../generated/graphql'
 import { isServer } from '../utils'
 import { NoUnderlineLink } from './NoUnderlineLink'
@@ -10,6 +11,7 @@ interface NavBarProps {
 
 export const NavBar = (props: NavBarProps): JSX.Element => {
   const { } = props
+  const router = useRouter()
   const [{ fetching: logoutFetching }, logout] = useLogoutMutation()
 
   /*
@@ -41,13 +43,25 @@ export const NavBar = (props: NavBarProps): JSX.Element => {
   else {                // user logged in
     body =
       <Flex alignItems='center'>
-        <NextLink href='/create-post'>
-          <Button as={NoUnderlineLink} mr={5}>
-            Create Post
-          </Button>
-        </NextLink>
+        {
+          !router?.asPath.includes('create-post') &&
+          <NextLink href='/create-post'>
+            <Button as={NoUnderlineLink} mr={5}>
+              Create Post
+            </Button>
+          </NextLink>
+        }
         <Box mr={2}>{data.me.username}</Box>
-        <Button onClick={() => { logout() }} isLoading={logoutFetching} variant='link'>Logout</Button>
+        <Button
+          onClick={async () => {
+            await logout()
+            router.reload()
+          }}
+          isLoading={logoutFetching}
+          variant='link'
+        >
+          Logout
+        </Button>
       </Flex>
   }
 
