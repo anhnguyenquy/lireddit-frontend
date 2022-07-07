@@ -4,10 +4,10 @@ import { NextPage } from 'next'
 import { withUrqlClient } from 'next-urql'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
-import { FormSuccessMessage, InputField, Layout } from '../components'
-import { useCreatePostMutation } from '../generated/graphql'
-import { useIsAuth } from '../hooks'
-import { createURQLClient } from '../utils'
+import { FormSuccessMessage, InputField, Layout } from 'src/components'
+import { useCreatePostMutation } from 'src/generated/graphql'
+import { useIsAuth } from 'src/hooks'
+import { createURQLClient } from 'src/utils'
 
 interface CreatePostProps {
 
@@ -22,7 +22,7 @@ const CreatePost: NextPage<CreatePostProps> = () => {
   const [showSuccessMessage, setShowSuccessMessage] = useState(false)
   useEffect(() => {
     if (showSuccessMessage) {
-      setInterval(() => { 
+      setInterval(() => {
         setRedirectCount(count => count - 1)
       }, 1000)
     }

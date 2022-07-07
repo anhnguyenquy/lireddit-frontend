@@ -2,9 +2,9 @@ import { Box, Flex, Heading } from '@chakra-ui/react'
 import { NextPage } from 'next'
 import { withUrqlClient } from 'next-urql'
 import { useRouter } from 'next/router'
-import { EditDeletePostButtons, Layout } from '../../components'
-import { useGetPostFromURL } from '../../hooks'
-import { createURQLClient } from '../../utils'
+import { EditDeletePostButtons, Layout } from 'src/components'
+import { useGetPostFromURL } from 'src/hooks'
+import { createURQLClient } from 'src/utils'
 
 interface PostProps {
 

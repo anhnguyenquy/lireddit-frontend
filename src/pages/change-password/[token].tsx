@@ -5,10 +5,10 @@ import { withUrqlClient } from 'next-urql'
 import NextLink from 'next/link'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
-import { InputField, Wrapper } from '../../components'
-import { useChangePasswordMutation } from '../../generated/graphql'
-import { formErrorMessage } from '../../styles'
-import { createURQLClient, sleep, toErrorMap } from '../../utils'
+import { InputField, Wrapper } from 'src/components'
+import { useChangePasswordMutation } from 'src/generated/graphql'
+import { formErrorMessage } from 'src/styles'
+import { createURQLClient, sleep, toErrorMap } from 'src/utils'
 
 interface ChangePasswordProps {
   token: string

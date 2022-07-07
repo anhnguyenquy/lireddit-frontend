@@ -5,10 +5,10 @@ import { NextPage } from 'next'
 import { withUrqlClient } from 'next-urql'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
-import { FormSuccessMessage, InputField, Layout } from '../../../components'
-import { useUpdatePostMutation } from '../../../generated/graphql'
-import { useGetPostFromURL, useGetQueryID, useIsAuth } from '../../../hooks'
-import { createURQLClient } from '../../../utils'
+import { FormSuccessMessage, InputField, Layout } from 'src/components'
+import { useUpdatePostMutation } from 'src/generated/graphql'
+import { useGetPostFromURL, useGetQueryID, useIsAuth } from 'src/hooks'
+import { createURQLClient } from 'src/utils'
 
 interface EditPostProps {
 

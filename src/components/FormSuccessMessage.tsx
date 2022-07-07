@@ -1,6 +1,6 @@
 import { CheckIcon } from '@chakra-ui/icons'
 import { Flex, Box } from '@chakra-ui/react'
-import { formSuccessMessage } from '../styles'
+import { formSuccessMessage } from 'src/styles'
 
 interface FormSuccessMessageProps {
   message: string

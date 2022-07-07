@@ -1,8 +1,8 @@
-import { EditIcon, DeleteIcon } from '@chakra-ui/icons'
-import { Flex, IconButton } from '@chakra-ui/react'
-import { NoUnderlineLink } from './NoUnderlineLink'
+import { DeleteIcon, EditIcon } from '@chakra-ui/icons'
+import { IconButton } from '@chakra-ui/react'
 import NextLink from 'next/link'
-import { useDeletePostMutation } from '../generated/graphql'
+import { useDeletePostMutation } from 'src/generated/graphql'
+import { NoUnderlineLink } from './NoUnderlineLink'
 
 interface EditDeletePostButtonsProps {
   id: number

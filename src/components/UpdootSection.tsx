@@ -1,8 +1,8 @@
 import { ArrowDownIcon, ArrowUpIcon } from '@chakra-ui/icons'
 import { Flex, IconButton } from '@chakra-ui/react'
 import { useState } from 'react'
-import { PostSnippetFragment, useDootMutation } from '../generated/graphql'
-import { useRequireLogin } from '../hooks'
+import { PostSnippetFragment, useDootMutation } from 'src/generated/graphql'
+import { useRequireLogin } from 'src/hooks'
 
 interface UpdootSectionProps {
   post: PostSnippetFragment

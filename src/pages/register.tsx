@@ -2,9 +2,9 @@ import { Box, Button, Flex, Link } from '@chakra-ui/react'
 import { Form, Formik } from 'formik'
 import { withUrqlClient } from 'next-urql'
 import { useRouter } from 'next/router'
-import { InputField, Wrapper } from '../components'
-import { useRegisterMutation } from '../generated/graphql'
-import { createURQLClient, toErrorMap } from '../utils'
+import { InputField, Wrapper } from 'src/components'
+import { useRegisterMutation } from 'src/generated/graphql'
+import { createURQLClient, toErrorMap } from 'src/utils'
 import NextLink from 'next/link'
 
 interface RegisterProps {
@@ -24,15 +24,15 @@ const Register = (props: RegisterProps): JSX.Element => {
     2. yarn graphql-codegen init:
       . Application built with React
       . http://localhost:4000/graphql
-      . src/graphql/** /* /graphql
+      . graphql/** /* /graphql
       . [The first 3]
-      . src/generated/graphql.tsx
+      . generated/graphql.tsx
       . codegen.yml
       . gen
     3. codegen.yml: replace "typescript-react-apollo" with "typescript-urql"
     4. package.json: remove "@graphql-codegen/typescript-react-apollo" under devDependencies
     5. yarn add -D @graphql-codegen/typescript-urql
-    6. touch src/graphqlmutations/register.graphql
+    6. touch graphqlmutations/register.graphql
     7. copy REGISTER_MUT to register.graphql
     8. yarn gen
   */

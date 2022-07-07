@@ -3,10 +3,10 @@ import { NextPage } from 'next'
 import { withUrqlClient } from 'next-urql'
 import NextLink from 'next/link'
 import { useState } from 'react'
-import { EditDeletePostButtons, Layout, UpdootSection } from '../components'
-import { usePostsQuery } from '../generated/graphql'
-import { useUser } from '../hooks'
-import { createURQLClient } from '../utils'
+import { EditDeletePostButtons, Layout, UpdootSection } from 'src/components'
+import { usePostsQuery } from 'src/generated/graphql'
+import { useUser } from 'src/hooks'
+import { createURQLClient } from 'src/utils'
 
 const Index: NextPage = () => {
   const [variables, setVariables] = useState<{ limit: number, cursor: string | null }>

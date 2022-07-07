@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router'
 import { useEffect } from 'react'
-import { useMeQuery } from '../generated/graphql'
+import { useMeQuery } from 'src/generated/graphql'
 
 export const useIsAuth = (autoRedirect: boolean) => {
   const [{ data, fetching }] = useMeQuery()

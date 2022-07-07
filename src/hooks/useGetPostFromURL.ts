@@ -1,4 +1,4 @@
-import { usePostQuery } from '../generated/graphql'
+import { usePostQuery } from 'src/generated/graphql'
 import { useGetQueryID } from './useGetQueryID'
 
 export const useGetPostFromURL = () => {

@@ -1,9 +1,9 @@
 import { Cache, cacheExchange, Resolver } from '@urql/exchange-graphcache'
 import { NextUrqlClientConfig } from 'next-urql'
 import Router from 'next/router'
+import { CreatePostMutation, DeletePostMutation, DeletePostMutationVariables, DootMutation, DootMutationVariables, LoginMutation, LogoutMutation, MeDocument, MeQuery, RegisterMutation } from 'src/generated/graphql'
 import { dedupExchange, Exchange, fetchExchange, gql } from 'urql'
 import { pipe, tap } from 'wonka'
-import { CreatePostMutation, DeletePostMutation, DeletePostMutationVariables, DootMutation, DootMutationVariables, LoginMutation, LogoutMutation, MeDocument, MeQuery, RegisterMutation } from '../generated/graphql'
 import { isServer } from './isServer'
 
 // returns the links for all previously cached items given query
@@ -124,7 +124,7 @@ export const createURQLClient: NextUrqlClientConfig = (ssrExchange, ctx) => {
     cookie = ctx.req.headers.cookie
   }
   return {
-    url: 'http://localhost:4000/graphql',
+    url: process.env.NEXT_PUBLIC_API_URL,
     fetchOptions: {
       credentials: 'include', // allows the cookie to be sent with the request
       headers: cookie ? { cookie } : undefined

@@ -2441,6 +2441,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/autosize@npm:^4.0.1":
+  version: 4.0.1
+  resolution: "@types/autosize@npm:4.0.1"
+  checksum: 190d5ef27cab78a8d1dc5271528905da9971a44668cdc705d96c8412cbc710a5e377429f11e16139d4f06120726d1a65732f1f5d4a7c6793fb15c89978d814f8
+  languageName: node
+  linkType: hard
+
 "@types/js-yaml@npm:^4.0.0":
   version: 4.0.5
   resolution: "@types/js-yaml@npm:4.0.5"
@@ -6214,6 +6221,7 @@ next@latest:
     "@graphql-codegen/typescript": 2.5.1
     "@graphql-codegen/typescript-operations": 2.4.2
     "@graphql-codegen/typescript-urql": ^3.5.12
+    "@types/autosize": ^4.0.1
     "@types/node": ^14.6.0
     "@types/react": ^17.0.3
     "@types/react-dom": ^17.0.3
