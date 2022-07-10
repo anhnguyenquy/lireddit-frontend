@@ -1,5 +1,7 @@
 {
-  "private": true,
+  "name": "lireddit-frontend",
+  "version": "1.0.0",
+  "description": "Frontend for lireddit. Uses Next.js, ChakraUI, and URQL. Deployed on Vercel.",
   "scripts": {
     "dev": "next",
     "build": "next build",
