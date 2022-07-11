@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "Frontend for lireddit. Uses Next.js, ChakraUI, and URQL. Deployed on Vercel.",
   "scripts": {
+    "yarn:migrate": "yarn set version berry && echo \"nodeLinker: node-modules\" >> .yarnrc.yml && yarn install",
     "dev": "next",
     "build": "next build",
     "start": "next start",
