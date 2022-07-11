@@ -44,11 +44,11 @@ const Login = (props: LoginProps): JSX.Element => {
           if (response.data?.login.errors) {
             setErrors(toErrorMap(response.data.login.errors))
           }
-          else if (response.data?.login.user) { // if registered successfully
+          else if (response.data?.login.user) {
             if (typeof router.query.next == 'string') {
               router.push(router.query.next)
             }
-            else { // next is undefined
+            else {
               router.push('/')
             }
           }
