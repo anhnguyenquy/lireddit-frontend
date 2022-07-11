@@ -33,9 +33,9 @@ yarn-error.log*
 # .env.test.local
 # .env.production.local
 
+# .env.{environment} files are defaults
 # .env.local is always loaded automatically and will override all defaults
-# .env*.local files are loaded locally if NODE_ENV matches
-# the env files without .local suffix are defaults
+# .env*.local files are loaded locally if NODE_ENV matches and they override the respective default as well as .env.local
 
 # vercel
 .vercel
